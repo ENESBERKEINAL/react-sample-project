@@ -1,6 +1,6 @@
 It is a simple fetch sample example designed with andt lib. and I used redux for a global state management. 
 
-With docker
+# With docker
 If u want to run project over on docker simply open docker app, open a terminal in the project directory, 
 type 
 ### `docker compose build`
@@ -8,7 +8,7 @@ and
 ### `docker compose up` 
 run on localhost:3000
 
-Without docker 
+# Without docker 
 open a terminal in the project directory
 ### `npm install`
 and 
