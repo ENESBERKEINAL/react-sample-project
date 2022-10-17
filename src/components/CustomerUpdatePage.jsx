@@ -1,44 +1,50 @@
-import { Button, Col, Form, Input, Row } from 'antd'
+import { Button, Col, Descriptions, Form, Input, Row } from 'antd'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Await, useParams } from 'react-router-dom'
-
+import { useParams } from 'react-router-dom'
+import { showSuccessUpdateNotification } from './notifications/Notifications';
 
 function CustomerUpdatePage() {
 
     const [customers, setcustomers] = useState([]);
-    const [loading, setloading] = useState(true)
-    const {id}=useParams();
-    console.log("id",id)
+    const { id } = useParams();
+    const [form] = Form.useForm();
     useEffect(() => {
         getCustomers()
     }, [])
-    
 
     const submitForm = (values) => {
 
         axios.put(`https://northwind.vercel.app/api/customers/${id}`, values)
-        .then(res => {
-            console.log('RES', res.data);
-        })
-
-    }
-    const  getCustomers = () => {
-         axios.get(`https://northwind.vercel.app/api/customers/${id}`)
             .then(res => {
-                setcustomers(res.data)
-                setloading(false)
-            });
+                console.log('RES', res.data);
+                showSuccessUpdateNotification('info')
+                form.resetFields();
+                getCustomers();
+            }).catch(err=> {
+                console.log("Error accured while customer updating", err)
+            })
     }
+    const getCustomers = () => {
+        axios.get(`https://northwind.vercel.app/api/customers/${id}`)
+            .then(res => {
+            setcustomers(res.data)
+            })
+            .catch(err=> {
+                console.log("Error accured while customer getting", err)
+                
+            }).finally(()=>{
 
-
-    
-
+            });
+        }
 
     return (<>
+        <Descriptions  title="Customer Update" bordered></Descriptions>
+    
         <Form
-        layout='vertical'
+            layout='vertical'
             onFinish={submitForm}
+            form={form}
         >
 
             <Row gutter={24}>
@@ -46,9 +52,10 @@ function CustomerUpdatePage() {
                     <Form.Item
                         label='Company Name'
                         name='companyName'
-                        rules={[{ required: true, message: 'Please input your company Name!' },{max:30}]}
+                        rules={[{ required: true, message: 'Please input your company Name!' }, { max: 30 }]}
                     >
-                        <Input placeholder={customers.companyName} />
+
+                        <Input value={customers.companyName} />
                     </Form.Item>
                 </Col>
 
@@ -75,15 +82,14 @@ function CustomerUpdatePage() {
                 <Col span={12}>
                     <Form.Item
                         label='Adress'
-                        name='adress'
+                        name='adress.street'
                     >
-                        <Input placeholder={customers.adress} />
+                        <Input placeholder={customers.address?.street} />
                     </Form.Item>
                 </Col>
             </Row>
 
             <Button type="primary" htmlType="submit">Update</Button>
-
 
         </Form>
     </>

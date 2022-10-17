@@ -2,15 +2,12 @@ import { Button, Table, Modal } from 'antd'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const { confirm } = Modal;
 
+function Customers() {
 
-
-function Customers(props) {
- 
-    
     const navigate = useNavigate();
     const [customers, setcustomers] = useState([]);
     const [loading, setloading] = useState(true)
@@ -29,13 +26,12 @@ function Customers(props) {
             });
     }
 
-
     const deleteCustomer = (id) => {
 
         confirm({
             title: 'Are you sure delete this customer?',
             icon: <ExclamationCircleOutlined />,
-            content: 'Some descriptions',
+            content: '',
             okText: 'Yes',
             okType: 'danger',
             cancelText: 'No',
@@ -45,6 +41,8 @@ function Customers(props) {
                 axios.delete(`https://northwind.vercel.app/api/customers/${id}`)
                     .then(res => {
                         getCustomers();
+                    }).catch(err => {
+                        console.log("Error accured while deleting customer -> ", err)
                     })
             },
 
@@ -52,21 +50,16 @@ function Customers(props) {
                 console.log('Cancel');
             },
         });
-
-
-
     }
 
     const goToDetail = (id) => {
-        console.log("id",id)
         navigate('/customer/detail/' + id)
-        
+
     }
-   
+
     const updateCustomer = (id) => {
-        console.log("id",id)
         navigate('/customer/update/' + id)
-        
+
     }
 
     let columns = [
@@ -104,7 +97,6 @@ function Customers(props) {
         },
     ]
 
-
     return (<>
         <Table
             pagination={
@@ -119,5 +111,5 @@ function Customers(props) {
     </>
     )
 }
- 
-export default  Customers
+
+export default Customers

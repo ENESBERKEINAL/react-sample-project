@@ -4,32 +4,21 @@ import 'antd/dist/antd.css';
 import { Layout, Menu } from 'antd';
 import Customers from "./components/Customers";
 import AddCustomer from "./components/AddCustomer";
-import { connect, useSelector } from "react-redux";
 import CustomerUpdatePage from "./components/CustomerUpdatePage";
 import HomePage from "./components/HomePage";
 
 
-
 const { Header, Content, Footer } = Layout;
 
-function App(props) {
-
-  var isLoggedIn=false;
+function App() {
  
-
-
   const items = [
     { label: <Link to='/'>Home</Link>, key: '1' },
     { label: <Link to='/customers'>Customers</Link>, key: '2' },
     { label: <Link to='/addcustomer'>Add Customer</Link>, key: '3' },
-
-
-
   ];
 
-  return (
-    <>
-
+  return (<>
       <Layout>
         <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
           <Menu
@@ -51,25 +40,12 @@ function App(props) {
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}> </Footer>
-
-
-
       </Layout>
-
-
-
-
-
     </>
   );
 }
 
-const mapStateToProps = (state) => {
 
-  return {
-    favorites: state
-  }
-}
 
-export default connect(mapStateToProps)(App);
+export default App;
 

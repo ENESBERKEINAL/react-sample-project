@@ -1,15 +1,17 @@
-import { Button, Checkbox, Form, Input } from "antd";
+import { Button, Form, Input } from "antd";
 import 'antd/dist/antd.css';
 import React from "react";
 import { Layout, Menu } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
+import { showFailedLoginAttemptNotification } from "./components/notifications/Notifications";
 
 
-const { Header, Content, Footer } = Layout;
+const { Header } = Layout;
 const App = () => {
 
   let isLoggedInValue=useSelector(state=>state);
   const dispatch= useDispatch();
+  const [form] = Form.useForm();
 
   const onFinish = (values) => {
 
@@ -21,7 +23,9 @@ const App = () => {
       
     }
     else{
+      showFailedLoginAttemptNotification('error')
       console.log("Failed!!", values.username, values.password,isLoggedInValue);
+      form.resetFields()
     }
   };
 
@@ -30,20 +34,18 @@ const App = () => {
   };
 
   return (<><div><div><Layout>
-    <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
-      <Menu
-        theme="dark"
-        mode="horizontal"
-        defaultSelectedKeys={['1']}
-      />
+    <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}  string={"enes"}>
+      <Menu theme="dark"
+      mode="horizontal"
+      defaultSelectedKeys={['1']}>
+        
+        <Menu.Item>Login</Menu.Item>
+      </Menu>
     </Header>
 
-    <Footer style={{ textAlign: 'center' }}> </Footer>
-
-
-
   </Layout></div>
-    <div style={{paddingTop: "125px" }}><Form
+    <div style={{paddingTop: "125px", paddingRight:"1117px" }}><Form
+      form={form}
       name="basic"
       labelCol={{
         span: 8,
@@ -58,7 +60,7 @@ const App = () => {
       onFinishFailed={onFinishFailed}
       autoComplete="off"
     >
-      <Form.Item
+      <Form.Item style={{ marginLeft: 'auto' }}
         label="Username"
         name="username"
         rules={[
@@ -90,7 +92,7 @@ const App = () => {
           span: 16,
         }}
       >
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" style={{float:"right"}}>
           Submit
         </Button>
       </Form.Item>
